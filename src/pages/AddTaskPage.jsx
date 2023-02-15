@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import EmployeeForm from "../components/EmployeeForm";
-import * as employeeService from "../services/employee";
+import * as employeeService from "../services/task";
 
-const AddEmployeePage = () => {
+const AddTaskPage = () => {
   const navigate = useNavigate();
-  const handleSubmit = (employee) => {
+  const handleSubmit = (task) => {
     employeeService
-      .addEmployee(employee)
+      .addTask(task)
       .then((response) => {
         console.log(response);
         navigate("/");
@@ -26,4 +26,4 @@ const AddEmployeePage = () => {
   );
 };
 
-export default AddEmployeePage;
+export default AddTaskPage;

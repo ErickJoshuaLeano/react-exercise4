@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import EmployeeForm from "../components/EmployeeForm";
-import * as employeeService from "../services/employee";
+import * as employeeService from "../services/task";
 
 const EditEmployeePage = () => {
   const params = useParams();
 
   const navigate = useNavigate();
 
-  const [employee, setEmployee] = useState(null);
+  const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    employeeService.fetchEmployeeById(params.id).then((response) => {
-      setEmployee(response.data);
+    employeeService.fetchTaskById(params.id).then((response) => {
+      setTask(response.data);
       setLoading(false);
     });
   }, [params.id]);
 
   const handleSubmit = (form) => {
     employeeService
-      .updateEmployee(employee.id, form)
+      .updateTask(task.id, form)
       .then(() => {
         navigate("/");
       })
@@ -36,17 +36,12 @@ const EditEmployeePage = () => {
     return <h1>Loading...</h1>;
   }
 
-  if (employee)
+  if (task)
     return (
       <div>
         <EmployeeForm
           initialValue={{
-            name: employee.name,
-            username: employee.username,
-            email: employee.email,
-            phone: employee.phone || "",
-            address: employee.address || "",
-            website: employee.website || "",
+            title: task.title,
           }}
           onSubmit={handleSubmit}
         />

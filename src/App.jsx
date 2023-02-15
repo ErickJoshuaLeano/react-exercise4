@@ -1,9 +1,9 @@
 import { Container, CssBaseline } from "@mui/material";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
-import AddEmployeePage from "./pages/AddEmployeePage";
-import EmployeesPage from "./pages/EmployeesPage";
-import EmployeeDetailsPage from "./pages/EmployeeDetailsPage";
-import EditEmployeePage from "./pages/EditEmployeePage";
+import AddTaskPage from "./pages/AddTaskPage";
+import TasksPage from "./pages/TasksPage";
+import TaskDetailsPage from "./pages/TaskDetailsPage";
+import EditTaskPage from "./pages/EditTaskPage";
 import NotFound from "./pages/NotFound";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
@@ -41,28 +41,24 @@ function App() {
       <NavBar onLogout={handleLogout} />
       <Container sx={{ marginTop: 3 }}>
         <Routes>
-          <Route path="/" element={<Navigate to="/employees" />} />
+          <Route path="/" element={<Navigate to="/tasks" />} />
           <Route
-            path="/employees"
-            element={accessToken ? <EmployeesPage /> : <Navigate to="/login" />}
+            path="/tasks"
+            element={accessToken ? <TasksPage /> : <Navigate to="/login" />}
           />
           <Route
-            path="/employees/new"
+            path="/tasks/new"
+            element={accessToken ? <AddTaskPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/tasks/:id"
             element={
-              accessToken ? <AddEmployeePage /> : <Navigate to="/login" />
+              accessToken ? <TaskDetailsPage /> : <Navigate to="/login" />
             }
           />
           <Route
-            path="/employees/:id"
-            element={
-              accessToken ? <EmployeeDetailsPage /> : <Navigate to="/login" />
-            }
-          />
-          <Route
-            path="/employees/:id/edit"
-            element={
-              accessToken ? <EditEmployeePage /> : <Navigate to="/login" />
-            }
+            path="/tasks/:id/edit"
+            element={accessToken ? <EditTaskPage /> : <Navigate to="/login" />}
           />
           <Route
             path="/register"

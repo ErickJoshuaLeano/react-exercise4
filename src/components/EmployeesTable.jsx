@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,37 +11,51 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import EditIcon from "@mui/icons-material/Edit";
 import { Link } from "react-router-dom";
+import { Checkbox } from "@mui/material";
+import * as taskService from "../services/task";
 
-const EmployeesTable = ({ employees, onDeleteEmployee }) => {
+const label = { inputProps: { "aria-label": "Checkbox demo" } };
+
+const EmployeesTable = ({
+  tasks,
+  onDeleteTask,
+  initialValue,
+  onUpdateChanged,
+}) => {
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Username</TableCell>
-            <TableCell>Email</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Task</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {employees.map((employee) => (
-            <TableRow key={employee.id}>
-              <TableCell>{employee.name}</TableCell>
-              <TableCell>{employee.username}</TableCell>
-              <TableCell>{employee.email}</TableCell>
+          {tasks.map((task) => (
+            <TableRow key={task.id}>
               <TableCell>
-                <Link to={`/employees/${employee.id}`}>
+                <Checkbox
+                  name="completed"
+                  {...label}
+                  checked={task.completed}
+                  onChange={() => onUpdateChanged(task.id)}
+                />
+              </TableCell>
+              <TableCell>{task.title}</TableCell>
+              <TableCell>
+                <Link to={`/tasks/${task.id}`}>
                   <IconButton>
                     <ArrowForwardIcon />
                   </IconButton>
                 </Link>
-                <Link to={`/employees/${employee.id}/edit`}>
+                <Link to={`/tasks/${task.id}/edit`}>
                   <IconButton>
                     <EditIcon />
                   </IconButton>
                 </Link>
-                <IconButton onClick={() => onDeleteEmployee(employee.id)}>
+                <IconButton onClick={() => onDeleteTask(task.id)}>
                   <DeleteIcon />
                 </IconButton>
               </TableCell>

@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import * as employeeService from "../services/employee";
+import * as taskService from "../services/task";
 
 const EmployeeDetailsPage = () => {
   const params = useParams();
@@ -22,20 +22,20 @@ const EmployeeDetailsPage = () => {
 
   const open = Boolean(anchorEl);
 
-  const [employee, setEmployee] = useState(null);
+  const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    employeeService.fetchEmployeeById(params.id).then((response) => {
-      setEmployee(response.data);
+    taskService.fetchTaskById(params.id).then((response) => {
+      setTask(response.data);
       setLoading(false);
     });
   }, [params.id]);
 
-  const handleDeleteEmployee = async (id) => {
+  const handleDeleteTask = async (id) => {
     try {
-      await employeeService.deleteEmployee(id);
+      await taskService.deleteTask(id);
       navigate("/");
     } catch (error) {
       if (error.response && error.response.status === 404) {
@@ -56,7 +56,7 @@ const EmployeeDetailsPage = () => {
     return <h1>Loading...</h1>;
   }
 
-  if (employee)
+  if (task)
     return (
       <Card>
         <CardHeader
@@ -65,8 +65,8 @@ const EmployeeDetailsPage = () => {
               <MoreVertIcon />
             </IconButton>
           }
-          title={employee.name}
-          subheader={`@${employee.username}`}
+          title={task.title}
+          subheader={task.completed ? "Completed" : "Incomplete"}
         />
         <CardContent>
           <Menu
@@ -75,31 +75,23 @@ const EmployeeDetailsPage = () => {
             open={open}
             onClose={handleCloseMenu}
           >
-            <MenuItem
-              onClick={() => navigate(`/employees/${employee.id}/edit`)}
-            >
+            <MenuItem onClick={() => navigate(`/tasks/${task.id}/edit`)}>
               Edit
             </MenuItem>
-            <MenuItem onClick={() => handleDeleteEmployee(employee.id)}>
+            <MenuItem onClick={() => handleDeleteTask(task.id)}>
               Delete
             </MenuItem>
           </Menu>
-          <Grid container spacing={5}>
-            <Grid item xs={6}>
-              <Typography variant="overline">Email</Typography>
-              <Typography variant="body2">{employee.email}</Typography>
+          <Grid container>
+            <Grid item xs={12}>
+              <Typography variant="overline">Task</Typography>
+              <Typography variant="body2">{task.title}</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="overline">Phone</Typography>
-              <Typography variant="body2">{employee.phone}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="overline">Adress</Typography>
-              <Typography variant="body2">{employee.address}</Typography>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography variant="overline">Website</Typography>
-              <Typography variant="body2">{employee.website}</Typography>
+              <Typography variant="overline">Status</Typography>
+              <Typography variant="body2">
+                {task.completed ? "Completed" : "Incomplete"}
+              </Typography>
             </Grid>
           </Grid>
         </CardContent>

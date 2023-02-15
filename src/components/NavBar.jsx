@@ -8,6 +8,8 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import * as authService from "../services/auth";
 import { Link, useNavigate } from "react-router-dom";
+import jwtDecode from "jwt-decode";
+
 const NavBar = ({ onLogout }) => {
   const currentUser = authService.getCurrentUser();
   const navigate = useNavigate();
@@ -21,7 +23,7 @@ const NavBar = ({ onLogout }) => {
             sx={{ flexGrow: 1, cursor: "pointer" }}
             onClick={() => navigate("/")}
           >
-            Employee App
+            Task Manager App
           </Typography>
           <div>
             {currentUser ? (
@@ -31,7 +33,7 @@ const NavBar = ({ onLogout }) => {
                   variant="body1"
                   sx={{ marginRight: 2 }}
                 >
-                  Welcome {currentUser.username}
+                  Welcome {currentUser.name}
                 </Typography>
                 <Button color="inherit" onClick={onLogout}>
                   Logout
@@ -44,6 +46,9 @@ const NavBar = ({ onLogout }) => {
                 </Button>
                 <Button LinkComponent={Link} to="/login" color="inherit">
                   Login
+                </Button>
+                <Button color="inherit" onClick={onLogout}>
+                  Emergency Logout
                 </Button>
               </>
             )}
